@@ -1,10 +1,14 @@
 from groq import Groq
 from bs4 import BeautifulSoup
 import requests
+import json
 
-GROQ_API_KEY = "foo"
-SZKOPUL_API_KEY = "bar"
-AI_MODEL = "baz"
+f = open("config.json", "r")
+data = json.load(f)
+
+GROQ_API_KEY = data["GROQ_API_KEY"]
+SZKOPUL_API_KEY = data["SZKOPUL_API_KEY"]
+AI_MODEL = data["AI_MODEL"]
 
 contest_id = input("[?] Enter the ID of the contest: ")
 problem_short_name = input("[?] Enter the short name of the problem: ")

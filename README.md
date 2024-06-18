@@ -31,12 +31,14 @@ The dependencies include:
 
 ## Configuration
 
-Modify the `main.py` file to include your credentials and configuration:
+Modify the `config.json` file to include your credentials and configuration:
 
-```py
-GROQ_API_KEY = "foo"
-SZKOPUL_API_KEY = "bar"
-AI_MODEL = "baz"
+```json
+{
+    "GROQ_API_KEY": "foo",
+    "SZKOPUL_API_KEY": "bar",
+    "AI_MODEL": "baz"
+}
 ```
 
 ### API Tokens
@@ -51,12 +53,12 @@ Szkopul: <br> https://szkopul.edu.pl/api/token
 
 You can find aviable AI models here: <br> https://console.groq.com/docs/models
 
-In the `main.py` file, set the value of `AI_MODEL` to the `Model ID` of AI of you choosing.
+In the `config.json` file, set the value of `AI_MODEL` to the `Model ID` of AI of you choosing.
 
 _Example:_
 
-```py
-AI_MODEL = "llama3-8b-8192"
+```json
+"AI_MODEL": "llama3-8b-8192"
 ```
 
 ## Problems

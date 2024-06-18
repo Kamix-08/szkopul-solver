@@ -1,0 +1,5 @@
+{
+    "GROQ_API_KEY": "foo",
+    "SZKOPUL_API_KEY": "bar",
+    "AI_MODEL": "baz"
+}
