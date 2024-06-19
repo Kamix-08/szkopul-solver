@@ -83,6 +83,8 @@ The script cannot process those images, so the user will be prompted to input th
 [?] Input the text seen on the image #1: 
 ```
 
+On top of that, the script can only process problems from public contest, such as [zLO155](https://szkopul.edu.pl/c/zlo155/), while not being able to process private contests (contest, that require authorization to access), such as [PIWO 2019/20](https://szkopul.edu.pl/c/piwo-201920/).
+
 ## Contributions
 
 Contributions are welcome! If you'd like to contribute, please fork the repository and use a feature branch. Pull requests are warmly welcome.

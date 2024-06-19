@@ -26,7 +26,7 @@ for span in unformatted.findAll('span', {'class': 'texmath'}):
     if image_count == 1:
         print()
 
-    value = input(f"[?] Input the text seen on the image #{image_count}: ")
+    value = input(f"[?] Input the text seen on the LaTeX image #{image_count}: ")
     span.string = value
     image_count += 1
 
@@ -43,7 +43,10 @@ for element in unformatted.children:
         formatted_text.append('\n' + element.get_text())
 
     else:
-        formatted_text.append(element.get_text())
+        try:
+            formatted_text.append(element.get_text())
+        except:
+            formatted_text.append("[nie udało się pobrać zawartości elementu]")
 
 text = ' '.join(formatted_text)
 
