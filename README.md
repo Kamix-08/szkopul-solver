@@ -28,6 +28,7 @@ The dependencies include:
 - `groq>=0.9.0`
 - `bs4>=0.0.2`
 - `requests>=2.31.0`
+- `PyPDF2>=3.0.1`
 
 ## Configuration
 
@@ -63,24 +64,14 @@ _Example:_
 
 ## Problems
 
-Currently the script only supports the problems, that are rendered as an HTML document:
-
-![Example of correctly rendered problem](images/img01.png "Example of correctly rendered problem")
-
-The problems rendered as a PDF file are not supported:
-
-![Example of incorrectly rendered problem](images/img02.png "Example of incorrectly rendered problem")
-
----
-
-Aditionally, Szkopul uses images to render some of the text, such as `2^n` in this example:
+Szkopul uses images to render some of the text, such as `2^n` in this example:
 
 ![Example of incorrectly rendered text](images/img03.png "Example of incorrectly rendered text")
 
 The script cannot process those images, so the user will be prompted to input the text from those images manually:
 
 ```plaintext
-[?] Input the text seen on the image #1: 
+[?] Input the text seen on the LaTeX image #1: 
 ```
 
 On top of that, the script can only process problems from public contest, such as [zLO155](https://szkopul.edu.pl/c/zlo155/), while not being able to process private contests (contest, that require authorization to access), such as [PIWO 2019/20](https://szkopul.edu.pl/c/piwo-201920/).
@@ -91,4 +82,4 @@ Contributions are welcome! If you'd like to contribute, please fork the reposito
 
 ## License 
 
-This project is licensed under the MIT License - see the `LICENSE` file for details.
+This project is licensed under the MIT License - see the [`LICENSE`](./LICENSE) file for details.

@@ -2,6 +2,8 @@ from groq import Groq
 from bs4 import BeautifulSoup
 import requests
 import json
+from PyPDF2 import PdfReader
+import os
 
 f = open("config.json", "r")
 data = json.load(f)
@@ -16,39 +18,80 @@ print('')
 
 print("[.] Getting the webpage...")
 url = f"https://szkopul.edu.pl/c/{contest_id}/p/{problem_short_name}/"
-soup = BeautifulSoup(requests.get(url).text, "html.parser")
+response = requests.get(url)
+soup = BeautifulSoup(response.text, "html.parser")
 
-print("[.] Getting the contents of the task...")
-unformatted = soup.find('section', {'class': 'main-content'}).div
+def parse_html():
+    global text
 
-image_count = 1
-for span in unformatted.findAll('span', {'class': 'texmath'}):
-    if image_count == 1:
+    image_count = 1
+    for span in unformatted.findAll('span', {'class': 'texmath'}):
+        if image_count == 1:
+            print()
+
+        value = input(f"[?] Input the text seen on the LaTeX image #{image_count}: ")
+        span.string = value
+        image_count += 1
+
+    if image_count != 1:
         print()
 
-    value = input(f"[?] Input the text seen on the LaTeX image #{image_count}: ")
-    span.string = value
-    image_count += 1
+    print("[.] Formatting the HTML...")
+    formatted_text = []
+    for element in unformatted.children:
+        if element.name == 'h3':
+            formatted_text.append(element.get_text() + '\n')
 
-if image_count != 1:
-    print()
+        elif element.name == 'h2':
+            formatted_text.append('\n' + element.get_text())
 
-print("[.] Formatting the HTML...")
-formatted_text = []
-for element in unformatted.children:
-    if element.name == 'h3':
-        formatted_text.append(element.get_text() + '\n')
+        else:
+            try:
+                formatted_text.append(element.get_text())
+            except:
+                formatted_text.append("[nie udało się pobrać zawartości elementu]")
+   
+    text = ' '.join(formatted_text)
 
-    elif element.name == 'h2':
-        formatted_text.append('\n' + element.get_text())
+def parse_pdf():
+    global text
 
-    else:
-        try:
-            formatted_text.append(element.get_text())
-        except:
-            formatted_text.append("[nie udało się pobrać zawartości elementu]")
+    document_path = f"{problem_short_name}.pdf"
+    with open(document_path, "wb") as f:
+        f.write(response.content)
 
-text = ' '.join(formatted_text)
+    reader = PdfReader(document_path)
+
+    image_count = 1
+    formatted_text = []
+    for i, page in enumerate(reader.pages):
+        text = page.extract_text()
+
+        while text.find("\n ") != -1:
+            if image_count == 1:
+                print()
+
+            value = input(f"[?] Input the text seen on the LaTeX image #{image_count} from page #{i+1}: ")
+            text = text.replace("\n ", value, 1)
+            image_count += 1
+
+        formatted_text.append(text)
+
+    if image_count != 1:
+        print()
+
+    print("[.] Formatting the PDF...")
+    text = '\n\n'.join(formatted_text)
+
+    if os.path.exists(document_path):
+        os.remove(document_path)
+
+print("[.] Getting the contents of the task...")
+try:
+    unformatted = soup.find('section', {'class': 'main-content'}).div
+    parse_html()
+except:
+    parse_pdf()
 
 question = f"""Odpowiedz, podając kod rozwiązania w C++:
 
